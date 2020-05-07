@@ -1,4 +1,4 @@
 package logic.data;
 
-public class Ship {
+public class Log {
 }
