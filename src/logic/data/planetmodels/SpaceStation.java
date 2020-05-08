@@ -7,11 +7,6 @@ public class SpaceStation implements ISpaceStation {
 
     private Ship dockedShip;
 
-    public SpaceStation(Ship dockedShip) {
-        this.dockedShip = dockedShip;
-    }
-
-
     @Override
     public void upgradeCargo() {
         try {
@@ -21,6 +16,10 @@ public class SpaceStation implements ISpaceStation {
         } catch (Exception e) {
             //TODO: handle
         }
+    }
+
+    public void dockShip(Ship dockedShip) {
+        this.dockedShip = dockedShip;
     }
 
     @Override

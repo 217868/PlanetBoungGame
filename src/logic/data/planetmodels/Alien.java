@@ -2,12 +2,18 @@ package logic.data.planetmodels;
 
 public class Alien {
 
+    private AlienType alienType;
+    private AttackDeathStatistic attackDeathStatistic;
+
     private boolean isDestroyed;
 
     private int x;
     private int y;
 
-    public Alien(int x, int y) {
+    public Alien(AlienType alienType, int x, int y) {
+        this.alienType = alienType;
+        this.attackDeathStatistic = AliensToStatisticsMap.getStatisticsForAlienType(alienType);
+
         this.x = x;
         this.y = y;
 
@@ -33,5 +39,21 @@ public class Alien {
     public void setXY(int x, int y) {
         this.x = x;
         this.y = y;
+    }
+
+    public AlienType getAlienType() {
+        return alienType;
+    }
+
+    public void setAlienType(AlienType alienType) {
+        this.alienType = alienType;
+    }
+
+    public AttackDeathStatistic getAttackDeathStatistic() {
+        return attackDeathStatistic;
+    }
+
+    public void setAttackDeathStatistic(AttackDeathStatistic attackDeathStatistic) {
+        this.attackDeathStatistic = attackDeathStatistic;
     }
 }
