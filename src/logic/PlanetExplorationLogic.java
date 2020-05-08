@@ -7,6 +7,7 @@ import logic.data.planetmodels.Planet;
 import logic.data.shipmodels.Drone;
 import logic.data.shipmodels.Ship;
 
+import java.util.Scanner;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class PlanetExplorationLogic {
@@ -17,12 +18,18 @@ public class PlanetExplorationLogic {
     private int resourcePositionY;
     private Resource resource;
     private int alienWaitingCounter;
+    private int droneInitialPositionX;
+    private int droneInitialPositionY;
+    private boolean hasResource;
 
     public PlanetExplorationLogic(/*Ship ship, Resource resource*/){
        // this.drone = ship.getDrone();
        // this.resource = resource;
         this.drone = new Drone();
         initiateCoordinates();
+        this.droneInitialPositionX = drone.getX();
+        this.droneInitialPositionY = drone.getY();
+        this.hasResource = false;
         alienWaitingCounter = 0;
     }
 
@@ -53,7 +60,7 @@ public class PlanetExplorationLogic {
         this.resourcePositionY = resourceY;
     }
 
-    private boolean checkIfTheCoordinatesAreOutsideRange(int x, int y, int excX, int excY){
+    public boolean checkIfTheCoordinatesAreOutsideRange(int x, int y, int excX, int excY){
         if(x == excX && y == excY) return false;
         else if(x == excX - 1 && y == excY) return false;
         else if(x == excX + 1 && y == excY) return false;
@@ -95,6 +102,9 @@ public class PlanetExplorationLogic {
                 drone.moveRight();
                 break;
         }
+        if(isResourceReached(drone.getX(), drone.getY())) resourceReached();
+        if(isDroneBackInShip()) backInShip();
+
         if (alien != null) {
 
             if (!checkIfTheCoordinatesAreOutsideRange(drone.getX(), drone.getY(), alien.getX(), alien.getY()))
@@ -107,6 +117,7 @@ public class PlanetExplorationLogic {
             if (alienWaitingCounter == 0) createNewAlien();
         }
     }
+
     private void createNewAlien() {
         int alienX;
         int alienY;
@@ -119,7 +130,6 @@ public class PlanetExplorationLogic {
         this.alien = AlienFactory.createRandomAlien(alienX, alienY);
     }
 
-
     private void initiateFight(boolean doesDroneBeginFight) {
         int thrownValue = Dice.throwd6();
         if(!doesDroneBeginFight){
@@ -131,21 +141,21 @@ public class PlanetExplorationLogic {
             }
         }
         if (!drone.isDestroyed()) {
-            while (true) {
+            while(true){
                 thrownValue = Dice.throwd6();
-                if (alien.isAlienDead(thrownValue)) {
-                    System.out.println("Causes alien death: " + alien.getAttackDeathStatistic().getDeaths().toString() + " Dice: " + thrownValue);
+                if(alien.isAlienDead(thrownValue)) {
+                    System.out.println("Causes alien death: "+alien.getAttackDeathStatistic().getDeaths().toString() + " Dice: " + thrownValue);
                     alien.destroy();
                     alienDestroyed();
                     System.out.println("Alien dead");
                     break;
                 }
                 thrownValue = Dice.throwd6();
-                if (alien.isDroneAttacked(thrownValue)) {
-                    System.out.println("Causes attack on drone: " + alien.getAttackDeathStatistic().getAttacks().toString() + " Dice: " + thrownValue);
+                if(alien.isDroneAttacked(thrownValue)){
+                    System.out.println("Causes attack on drone: "+alien.getAttackDeathStatistic().getAttacks().toString() + " Dice: " + thrownValue);
                     drone.damageDrone();
                     System.out.println("Drone health: " + drone.getHealth());
-                    if (drone.isDestroyed()) {droneDestroyed(); break; }
+                    if (drone.isDestroyed()) break;
                 }
 
             }
@@ -167,15 +177,59 @@ public class PlanetExplorationLogic {
 
 
     // Test method to simulate user's input
+    public void resourceReached(){
+        System.out.println("Resource reached");
+    }
+
+    public void backInShip(){
+        if(isResourceInShip()) System.out.println("Back in ship with a resource");
+        else System.out.println("Back in ship without a resource");
+    }
+
+    public boolean isResourceReached(int droneX, int droneY){
+        if(droneX == resourcePositionX && droneY == resourcePositionY){
+            this.hasResource = true;
+            return true;
+        }
+        else return false;
+    }
+
+    public boolean isDroneBackInShip(){
+        if(drone.getX() == droneInitialPositionX && drone.getY() == droneInitialPositionY){
+            if(isComeBackToShipConfirmed()) return true;
+            else return false;
+        }
+        else return false;
+    }
+
+    public boolean isResourceInShip(){
+        if(isDroneBackInShip() && hasResource) return true;
+        else if(isDroneBackInShip() && !hasResource) return false;
+        else return false;
+    }
+
+    public boolean isComeBackToShipConfirmed(){
+        System.out.println("Do you wanna come back to the ship? y/n");
+        Scanner scanner = new Scanner(System.in);
+        char option = scanner.next().charAt(0);
+        if(option == 'y') return true;
+        else if(option == 'n') return false;
+        else return isComeBackToShipConfirmed();
+    }
+
     public void testMethod() {
-        moveDrone("down");
-        moveDrone("left");
-        moveDrone("down");
-        moveDrone("left");
-        moveDrone("down");
-        moveDrone("left");
-        moveDrone("down");
-        moveDrone("left");
+        drawGrid();
+        Scanner scanner = new Scanner(System.in);
+        char move;
+        do{
+            System.out.println("Drone move: ");
+            move = scanner.next().charAt(0);
+            if(move == 'w') moveDrone("up");
+            else if(move == 'a') moveDrone("left");
+            else if(move == 's') moveDrone("down");
+            else if(move == 'd') moveDrone("right");
+        } while(!isDroneBackInShip());
+
     }
 
 
