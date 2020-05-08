@@ -41,6 +41,14 @@ public class Alien {
         this.y = y;
     }
 
+    public void setX(int x) {
+        this.x = x;
+    }
+
+    public void setY(int y) {
+        this.y = y;
+    }
+
     public AlienType getAlienType() {
         return alienType;
     }
@@ -56,4 +64,15 @@ public class Alien {
     public void setAttackDeathStatistic(AttackDeathStatistic attackDeathStatistic) {
         this.attackDeathStatistic = attackDeathStatistic;
     }
+
+    public boolean isAlienDead(int thrownValue){
+        if(getAttackDeathStatistic().getDeaths().contains(thrownValue)) return true;
+        return false;
+    }
+
+    public boolean isDroneAttacked(int thrownValue){
+        if(getAttackDeathStatistic().getAttacks().contains(thrownValue)) return true;
+        return false;
+    }
+
 }
