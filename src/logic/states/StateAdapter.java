@@ -1,8 +1,23 @@
 package logic.states;
 
+import logic.GameData;
+import logic.data.Resource;
+import logic.data.shipmodels.Ship;
+
 public class StateAdapter implements IState {
+
+    private GameData gameData;
+
+    public StateAdapter(GameData gameData) {
+        this.gameData = gameData;
+    }
+
+    public GameData getGameData() {
+        return gameData;
+    }
+
     @Override
-    public IState selectShip() {
+    public IState selectShip(boolean isMilitary) {
         return this;
     }
 
@@ -33,6 +48,36 @@ public class StateAdapter implements IState {
 
     @Override
     public IState playAgain() {
+        return this;
+    }
+
+    @Override
+    public IState upgradeCargo() {
+        return this;
+    }
+
+    @Override
+    public IState convertResource(Resource from, Resource to) {
+        return this;
+    }
+
+    @Override
+    public IState hireCrew() {
+        return this;
+    }
+
+    @Override
+    public IState upgradeWeaponSystem() {
+        return this;
+    }
+
+    @Override
+    public IState replenishArmor() {
+        return this;
+    }
+
+    @Override
+    public IState buyNewDrone() {
         return this;
     }
 }

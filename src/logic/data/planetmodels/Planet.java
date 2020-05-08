@@ -10,16 +10,11 @@ public class Planet {
     ArrayList<Resource> resources;
     SpaceStation spaceStation;
 
-    public Planet(PlanetType planetType){
+    public Planet(PlanetType planetType, boolean hasSpaceStation){
         this.planetType = planetType;
         this.resources = ResourceToPlanetMap.getResourcesForPlanetType(planetType);
-        this.spaceStation = null;
-    }
-
-    public Planet(PlanetType planetType, SpaceStation spaceStation){
-        this.planetType = planetType;
-        this.resources = ResourceToPlanetMap.getResourcesForPlanetType(planetType);
-        this.spaceStation = spaceStation;
+        if(hasSpaceStation) this.spaceStation = new SpaceStation();
+        else this.spaceStation = null;
     }
 
     public PlanetType getPlanetType() {
@@ -40,5 +35,9 @@ public class Planet {
     public boolean hasSpaceStation(){
         if(spaceStation == null) return false;
         return true;
+    }
+
+    public SpaceStation getSpaceStation() {
+        return spaceStation;
     }
 }

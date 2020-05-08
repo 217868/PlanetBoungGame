@@ -1,11 +1,20 @@
 package logic.states;
 
+import logic.data.Resource;
+import logic.data.shipmodels.Ship;
+
 public interface IState {
-    IState selectShip();
+    IState selectShip(boolean isMilitary);
     IState goToSpaceStation();
     IState goToSpaceTravel();
     IState goToPlanet();
     IState gameStatusCheck(int artifactNumber, int fuelAmount, int crewMembersAmount);
     IState repeat();
     IState playAgain();
+    IState upgradeCargo();
+    IState convertResource(Resource from, Resource to);
+    IState hireCrew();
+    IState upgradeWeaponSystem();
+    IState replenishArmor();
+    IState buyNewDrone();
 }
