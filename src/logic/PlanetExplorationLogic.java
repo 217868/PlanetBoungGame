@@ -119,7 +119,6 @@ public class PlanetExplorationLogic {
             alienWaitingCounter--;
             if (alienWaitingCounter == 0) createNewAlien();
         }
-        drawGrid();
     }
 
     private void createNewAlien() {
@@ -179,8 +178,6 @@ public class PlanetExplorationLogic {
         System.out.println("Moves before next alien arrives: " + alienWaitingCounter);
     }
 
-
-    // Test method to simulate user's input
     public void resourceReached(){
         System.out.println("Resource reached");
     }
@@ -220,10 +217,10 @@ public class PlanetExplorationLogic {
     }
 
     public void testMethod() {
-        drawGrid();
         Scanner scanner = new Scanner(System.in);
         char move;
         do{
+            drawGrid();
             System.out.println("Drone move: ");
             move = scanner.next().charAt(0);
             if(move == 'w') moveDrone("up");
