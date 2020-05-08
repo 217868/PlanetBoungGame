@@ -1,5 +1,7 @@
 package logic.data.planetmodels;
 
+import logic.Dice;
+
 import java.util.concurrent.ThreadLocalRandom;
 
 public class AlienFactory {
@@ -9,8 +11,8 @@ public class AlienFactory {
     }
 
     public static Alien createAlienWithRandomCoordinates(AlienType alienType) {
-        int x = ThreadLocalRandom.current().nextInt(0, 6);
-        int y = ThreadLocalRandom.current().nextInt(0, 6);
+        int x = Dice.throwd6();
+        int y = Dice.throwd6();
 
         return new Alien(alienType, x, y);
     }
