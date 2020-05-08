@@ -19,4 +19,8 @@ public class FuelSystem implements ShipSystem {
         fuelAmount -= amount;
         if (fuelAmount <= 0) return; //TODO: exception endgame
     }
+
+    public int getFuelAmount() {
+        return fuelAmount;
+    }
 }

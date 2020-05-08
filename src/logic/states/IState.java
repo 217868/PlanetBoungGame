@@ -17,4 +17,11 @@ public interface IState {
     IState upgradeWeaponSystem();
     IState replenishArmor();
     IState buyNewDrone();
+    IState goUp();
+    IState goDown();
+    IState goLeft();
+    IState goRight();
+    IState acceptReturn();
+    IState declineReturn();
+    IState goToNextRegion();
 }

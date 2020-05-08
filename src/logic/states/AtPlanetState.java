@@ -1,14 +1,46 @@
 package logic.states;
 
 import logic.GameData;
+import logic.PlanetExplorationLogic;
 
 public class AtPlanetState extends StateAdapter {
+
+    PlanetExplorationLogic logic;
+
     public AtPlanetState(GameData gameData) {
         super(gameData);
+
+        gameData.setExLogic(new PlanetExplorationLogic(gameData.getShip(), gameData.getPlanet().getRandomResource()));
+        logic = gameData.getExLogic();
     }
 
     @Override
-    public IState goToSpaceTravel(){
-        return new SpaceTravelState(getGameData());
+    public IState goUp() {
+        logic.moveDrone("up");
+        if (logic.isDroneBackInShip()) return new WaitingForReturnConfirmationState(getGameData());
+        return new AtPlanetState(getGameData());
     }
+
+    @Override
+    public IState goDown() {
+        logic.moveDrone("down");
+        if (logic.isDroneBackInShip()) return new WaitingForReturnConfirmationState(getGameData());
+        return new AtPlanetState(getGameData());
+    }
+
+    @Override
+    public IState goLeft() {
+        logic.moveDrone("left");
+        if (logic.isDroneBackInShip()) return new WaitingForReturnConfirmationState(getGameData());
+        return new AtPlanetState(getGameData());
+    }
+
+    @Override
+    public IState goRight() {
+        logic.moveDrone("right");
+        if (logic.isDroneBackInShip()) return new WaitingForReturnConfirmationState(getGameData());
+        return new AtPlanetState(getGameData());
+    }
+
+
 }

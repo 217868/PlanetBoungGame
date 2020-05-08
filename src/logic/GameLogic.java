@@ -1,5 +1,6 @@
 package logic;
 
+import logic.data.Resource;
 import logic.data.shipmodels.MilitaryShip;
 import logic.data.shipmodels.Ship;
 import logic.states.IState;
@@ -36,7 +37,63 @@ public class GameLogic {
     public void goToSpaceStation() {
         this.setState(this.state.goToSpaceStation());
     }
-    
+
+    public void upgradeCargo() {
+        this.setState(this.state.upgradeCargo());
+    }
+
+    public void convertResource(Resource from, Resource to) {
+        this.setState(this.state.convertResource(from, to));
+    }
+
+    public void hireCrew() {
+        this.setState(this.state.hireCrew());
+    }
+
+    public void upgradeWeaponSystem() {
+        this.setState(this.state.upgradeWeaponSystem());
+    }
+
+    public void replenishArmor() {
+        this.setState(this.state.replenishArmor());
+    }
+
+    public void buyNewDrone() {
+        this.setState(this.state.buyNewDrone());
+    }
+
+    public void goUp() {
+        this.setState(this.state.goUp());
+    }
+
+    public void goDown() {
+        this.setState(this.state.goDown());
+    }
+
+    public void goLeft() {
+        this.setState(this.state.goLeft());
+    }
+
+    public void goRight() {
+        this.setState(this.state.goRight());
+    }
+
+    public void acceptReturn() {
+        this.setState(this.state.acceptReturn());
+    }
+
+    public void declineReturn() {
+        this.setState(this.state.declineReturn());
+    }
+
+    public void goToNextRegion() {
+        this.setState(this.state.goToNextRegion());
+    }
+
+    public void playAgain() {
+        this.setState(this.state.playAgain());
+    }
+
 
     public GameData getGameData() {
         return gameData;

@@ -80,4 +80,39 @@ public class StateAdapter implements IState {
     public IState buyNewDrone() {
         return this;
     }
+
+    @Override
+    public IState goUp() {
+        return this;
+    }
+
+    @Override
+    public IState goDown() {
+        return this;
+    }
+
+    @Override
+    public IState goLeft() {
+        return this;
+    }
+
+    @Override
+    public IState goRight() {
+        return this;
+    }
+
+    @Override
+    public IState acceptReturn() {
+        return this;
+    }
+
+    @Override
+    public IState declineReturn() {
+        return this;
+    }
+
+    @Override
+    public IState goToNextRegion() {
+        return this;
+    }
 }

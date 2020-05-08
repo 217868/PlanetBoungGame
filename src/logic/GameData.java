@@ -8,10 +8,12 @@ public class GameData {
 
     private Ship ship;
     private Planet planet;
+    private PlanetExplorationLogic exLogic;
 
     GameData() {
         ship = null;
         generateNextPlanet();
+        exLogic = null;
     }
 
     public Ship getShip() {
@@ -20,6 +22,14 @@ public class GameData {
 
     public void setShip(Ship ship) {
         this.ship = ship;
+    }
+
+    public PlanetExplorationLogic getExLogic() {
+        return exLogic;
+    }
+
+    public void setExLogic(PlanetExplorationLogic exLogic) {
+        this.exLogic = exLogic;
     }
 
     public Planet getPlanet() {

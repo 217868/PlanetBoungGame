@@ -13,7 +13,6 @@ import java.util.concurrent.ThreadLocalRandom;
 public class PlanetExplorationLogic {
     private Drone drone;
     private Alien alien;
-    private Planet planet;
     private int resourcePositionX;
     private int resourcePositionY;
     private Resource resource;
@@ -23,10 +22,9 @@ public class PlanetExplorationLogic {
     private boolean hasResource;
     private boolean gameEnded;
 
-    public PlanetExplorationLogic(/*Ship ship, Resource resource*/){
-       // this.drone = ship.getDrone();
-       // this.resource = resource;
-        this.drone = new Drone();
+    public PlanetExplorationLogic(Ship ship, Resource resource){
+        this.drone = ship.getDrone();
+        this.resource = resource;
         initiateCoordinates();
         this.droneInitialPositionX = drone.getX();
         this.droneInitialPositionY = drone.getY();
@@ -62,7 +60,7 @@ public class PlanetExplorationLogic {
         this.resourcePositionY = resourceY;
     }
 
-    public boolean checkIfTheCoordinatesAreOutsideRange(int x, int y, int excX, int excY){
+    private boolean checkIfTheCoordinatesAreOutsideRange(int x, int y, int excX, int excY){
         if(x == excX && y == excY) return false;
         else if(x == excX - 1 && y == excY) return false;
         else if(x == excX + 1 && y == excY) return false;
@@ -71,7 +69,7 @@ public class PlanetExplorationLogic {
         else return true;
     }
 
-    public void moveAlien(){
+    private void moveAlien(){
         int xDifference = (int) Math.signum(drone.getX() - alien.getX());
         int yDifference = (int) Math.signum(drone.getY() - alien.getY());
 
@@ -183,11 +181,11 @@ public class PlanetExplorationLogic {
         System.out.println("Moves before next alien arrives: " + alienWaitingCounter);
     }
 
-    public void resourceReached(){
+    private void resourceReached(){
         System.out.println("Resource reached");
     }
 
-    public void backInShip(){
+    private void backInShip(){
         if(isResourceInShip()) {
             System.out.println("Back in ship with a resource");
             gameEnded = true;
@@ -200,7 +198,7 @@ public class PlanetExplorationLogic {
         }
     }
 
-    public boolean isResourceReached(int droneX, int droneY){
+    private boolean isResourceReached(int droneX, int droneY){
         if(droneX == resourcePositionX && droneY == resourcePositionY){
             this.hasResource = true;
             return true;
@@ -212,11 +210,11 @@ public class PlanetExplorationLogic {
         return drone.getX() == droneInitialPositionX && drone.getY() == droneInitialPositionY;
     }
 
-    public boolean isResourceInShip(){
+    private boolean isResourceInShip(){
         return hasResource;
     }
 
-    public boolean isComeBackToShipConfirmed(){
+    private boolean isComeBackToShipConfirmed(){
         System.out.println("Do you wanna come back to the ship? y/n");
         Scanner scanner = new Scanner(System.in);
         char option = scanner.next().charAt(0);

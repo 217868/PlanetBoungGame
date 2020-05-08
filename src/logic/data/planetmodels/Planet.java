@@ -9,6 +9,7 @@ public class Planet {
     PlanetType planetType;
     ArrayList<Resource> resources;
     SpaceStation spaceStation;
+    Resource availableResource;
 
     public Planet(PlanetType planetType, boolean hasSpaceStation){
         this.planetType = planetType;
@@ -39,5 +40,15 @@ public class Planet {
 
     public SpaceStation getSpaceStation() {
         return spaceStation;
+    }
+
+    public Resource getRandomResource() {
+        int randomIndex = (int) (Math.random() * resources.size());
+        availableResource = resources.get(randomIndex);
+        return availableResource;
+    }
+
+    public void deleteRandomResource() {
+        resources.remove(availableResource);
     }
 }

@@ -6,6 +6,15 @@ import logic.data.shipmodels.Ship;
 public class SpaceStation implements ISpaceStation {
 
     private Ship dockedShip;
+    private boolean isAlreadyVisited;
+
+    SpaceStation() {
+        isAlreadyVisited = false;
+    }
+
+    public boolean isAlreadyVisited() {
+        return isAlreadyVisited;
+    }
 
     @Override
     public void upgradeCargo() {
@@ -13,6 +22,7 @@ public class SpaceStation implements ISpaceStation {
             dockedShip.getCargoSystem().upgradeCargoSystem();
 
             dockedShip.getCargoSystem().payAllResources(1);
+            isAlreadyVisited = true;
         } catch (Exception e) {
             //TODO: handle
         }
@@ -53,6 +63,7 @@ public class SpaceStation implements ISpaceStation {
                 dockedShip.getCargoSystem().addBlackResource(1);
                 break;
         }
+        isAlreadyVisited = true;
     }
 
     @Override
@@ -61,6 +72,7 @@ public class SpaceStation implements ISpaceStation {
             dockedShip.hireOneCrewMember();
 
             dockedShip.getCargoSystem().payAllResources(1);
+            isAlreadyVisited = true;
         } catch (Exception e) {
             //TODO: handle
         }
@@ -72,6 +84,7 @@ public class SpaceStation implements ISpaceStation {
             dockedShip.getWeaponSystem().upgradeWeaponSystem();
 
             dockedShip.getCargoSystem().payAllResources(2);
+            isAlreadyVisited = true;
         } catch (Exception e) {
             //TODO: handle
         }
@@ -83,6 +96,8 @@ public class SpaceStation implements ISpaceStation {
             dockedShip.getShieldSystem().replenishArmor();
 
             dockedShip.getCargoSystem().payAllResources(1);
+            isAlreadyVisited = true;
+
         } catch (Exception e) {
             //TODO: handle
         }
@@ -94,6 +109,8 @@ public class SpaceStation implements ISpaceStation {
             dockedShip.getDrone().repairDrone();
 
             dockedShip.getCargoSystem().payAllResources(3);
+            isAlreadyVisited = true;
+
         } catch (Exception e) {
             //TODO: handle
         }
