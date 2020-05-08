@@ -10,9 +10,9 @@ import java.util.Map;
 
 public class ResourceToPlanetMap {
 
-     private HashMap<PlanetType, ArrayList<Resource>> planetTypesAndResources;
+     private static HashMap<PlanetType, ArrayList<Resource>> planetTypesAndResources;
 
-     public ResourceToPlanetMap(){
+     static {
          planetTypesAndResources = new HashMap<>();
          // GREEN PLANET
          ArrayList<Resource> greenPlanetResources = new ArrayList<>();
@@ -54,11 +54,11 @@ public class ResourceToPlanetMap {
          planetTypesAndResources.put(PlanetType.BLUE, bluePlanetResources);
      }
 
-    public HashMap<PlanetType, ArrayList<Resource>> getPlanetTypesAndResources() {
+    public static HashMap<PlanetType, ArrayList<Resource>> getPlanetTypesAndResources() {
         return planetTypesAndResources;
     }
 
-    public ArrayList<Resource> getResourcesForPlanetType(PlanetType planetType){
+    public static ArrayList<Resource> getResourcesForPlanetType(PlanetType planetType){
          return getPlanetTypesAndResources().get(planetType);
     }
 
