@@ -85,7 +85,7 @@ public class PlanetExplorationLogic {
 
     public void moveDrone(String dir) {
         if (drone.isDestroyed()) return;
-        drawGrid();
+
 
 
         switch(dir) {
@@ -109,13 +109,17 @@ public class PlanetExplorationLogic {
 
             if (!checkIfTheCoordinatesAreOutsideRange(drone.getX(), drone.getY(), alien.getX(), alien.getY()))
                 initiateFight(true);
-            moveAlien();
-            if (!checkIfTheCoordinatesAreOutsideRange(alien.getX(), alien.getY(), drone.getX(), drone.getY()))
-                initiateFight(false);
-        } else {
+            if (alien != null) {
+                moveAlien();
+                if (!checkIfTheCoordinatesAreOutsideRange(alien.getX(), alien.getY(), drone.getX(), drone.getY()))
+                    initiateFight(false);
+            }
+        }
+        if (alien == null ){
             alienWaitingCounter--;
             if (alienWaitingCounter == 0) createNewAlien();
         }
+        drawGrid();
     }
 
     private void createNewAlien() {
@@ -203,9 +207,7 @@ public class PlanetExplorationLogic {
     }
 
     public boolean isResourceInShip(){
-        if(isDroneBackInShip() && hasResource) return true;
-        else if(isDroneBackInShip() && !hasResource) return false;
-        else return false;
+        return hasResource;
     }
 
     public boolean isComeBackToShipConfirmed(){
@@ -214,7 +216,7 @@ public class PlanetExplorationLogic {
         char option = scanner.next().charAt(0);
         if(option == 'y') return true;
         else if(option == 'n') return false;
-        else return isComeBackToShipConfirmed();
+        return false;
     }
 
     public void testMethod() {
