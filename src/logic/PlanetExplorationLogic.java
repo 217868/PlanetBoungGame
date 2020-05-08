@@ -99,7 +99,10 @@ public class PlanetExplorationLogic {
         System.out.println("Drone position: " + drone.getX() + ", " + drone.getY());
         if (!checkIfTheCoordinatesAreOutsideRange(drone.getX(), drone.getY(), alien.getX(), alien.getY())) initiateFight(true);
         if(isResourceReached(drone.getX(), drone.getY())) resourceReached();
-        if(isDroneBackInShip()) backInShip();
+        if(isDroneBackInShip()) {
+            backInShip();
+            return;
+        }
         moveAlien();
         System.out.println("Alien position: " + alien.getX() + ", " + alien.getY());
         if (!checkIfTheCoordinatesAreOutsideRange(alien.getX(), alien.getY(), drone.getX(), drone.getY())) initiateFight(false);
@@ -173,9 +176,13 @@ public class PlanetExplorationLogic {
         System.out.println("Do you wanna come back to the ship? y/n");
         Scanner scanner = new Scanner(System.in);
         char option = scanner.next().charAt(0);
+        while (option != 'y' || option != 'n') {
+            System.out.println("You have to press y or n");
+            option = scanner.next().charAt(0);
+        }
         if(option == 'y') return true;
-        else if(option == 'n') return false;
-        else return isComeBackToShipConfirmed();
+        if(option == 'n') return false;
+        else return false;
     }
 
     public void testMethod() {
