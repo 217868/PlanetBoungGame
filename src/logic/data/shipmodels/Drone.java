@@ -47,8 +47,34 @@ public class Drone {
         return y;
     }
 
+    public int getHealth() {
+        return health;
+    }
+
+    public boolean isDestroyed() {
+        return isDestroyed;
+    }
+
     public void setXY(int x, int y) {
         this.x = x;
         this.y = y;
     }
+
+    public void moveUp(){
+        if(this.y - 1 >= 1) this.y--;
+    }
+
+    public void moveDown(){
+        if(this.y + 1 <= 6) this.y++;
+    }
+
+    public void moveLeft(){
+        if(this.x - 1 >= 1) this.x--;
+    }
+
+    public void moveRight(){
+        if(this.x + 1 <= 6) this.x++;
+    }
+
+
 }

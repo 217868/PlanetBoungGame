@@ -13,4 +13,8 @@ public class Dice {
     public static int throwd3(){
         return (int)(Math.random() * 3 + 1);
     }
+
+    public static int throwd2(){
+        return (int)(Math.random() * 2 + 1);
+    }
 }
