@@ -24,7 +24,35 @@ public class SpaceStation implements ISpaceStation {
 
     @Override
     public void convertResource(Resource from, Resource to) {
+        switch(from.getResourceType()){
+            case BLACK:
+                dockedShip.getCargoSystem().payBlackResource(1);
+                break;
+            case BLUE:
+                dockedShip.getCargoSystem().payBlueResource(1);
+                break;
+            case RED:
+                dockedShip.getCargoSystem().payRedResource(1);
+                break;
+            case GREEN:
+                dockedShip.getCargoSystem().payGreenResource(1);
+                break;
+        }
 
+        switch (to.getResourceType()){
+            case GREEN:
+                dockedShip.getCargoSystem().addGreenResource(1);
+                break;
+            case RED:
+                dockedShip.getCargoSystem().addRedResource(1);
+                break;
+            case BLUE:
+                dockedShip.getCargoSystem().addBlueResource(1);
+                break;
+            case BLACK:
+                dockedShip.getCargoSystem().addBlackResource(1);
+                break;
+        }
     }
 
     @Override
