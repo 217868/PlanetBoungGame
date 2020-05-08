@@ -10,18 +10,20 @@ import logic.data.shipmodels.Ship;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class PlanetExplorationLogic {
-    Drone drone;
-    Alien alien;
-    Planet planet;
-    int resourcePositionX;
-    int resourcePositionY;
-    Resource resource;
+    private Drone drone;
+    private Alien alien;
+    private Planet planet;
+    private int resourcePositionX;
+    private int resourcePositionY;
+    private Resource resource;
+    private int alienWaitingCounter;
 
     public PlanetExplorationLogic(/*Ship ship, Resource resource*/){
        // this.drone = ship.getDrone();
        // this.resource = resource;
         this.drone = new Drone();
         initiateCoordinates();
+        alienWaitingCounter = 0;
     }
 
     private void initiateCoordinates(){
@@ -51,7 +53,7 @@ public class PlanetExplorationLogic {
         this.resourcePositionY = resourceY;
     }
 
-    public boolean checkIfTheCoordinatesAreOutsideRange(int x, int y, int excX, int excY){
+    private boolean checkIfTheCoordinatesAreOutsideRange(int x, int y, int excX, int excY){
         if(x == excX && y == excY) return false;
         else if(x == excX - 1 && y == excY) return false;
         else if(x == excX + 1 && y == excY) return false;
@@ -75,6 +77,10 @@ public class PlanetExplorationLogic {
     }
 
     public void moveDrone(String dir) {
+        if (drone.isDestroyed()) return;
+        drawGrid();
+
+
         switch(dir) {
             case "up":
                 drone.moveUp();
@@ -89,11 +95,30 @@ public class PlanetExplorationLogic {
                 drone.moveRight();
                 break;
         }
-        if (!checkIfTheCoordinatesAreOutsideRange(drone.getX(), drone.getY(), alien.getX(), alien.getY())) initiateFight(true);
-        moveAlien();
-        if (!checkIfTheCoordinatesAreOutsideRange(alien.getX(), alien.getY(), drone.getX(), drone.getY())) initiateFight(false);
+        if (alien != null) {
 
+            if (!checkIfTheCoordinatesAreOutsideRange(drone.getX(), drone.getY(), alien.getX(), alien.getY()))
+                initiateFight(true);
+            moveAlien();
+            if (!checkIfTheCoordinatesAreOutsideRange(alien.getX(), alien.getY(), drone.getX(), drone.getY()))
+                initiateFight(false);
+        } else {
+            alienWaitingCounter--;
+            if (alienWaitingCounter == 0) createNewAlien();
+        }
     }
+    private void createNewAlien() {
+        int alienX;
+        int alienY;
+
+        do{
+            alienX = Dice.throwd6();
+            alienY = Dice.throwd6();
+        } while(!checkIfTheCoordinatesAreOutsideRange(alienX, alienY, drone.getX(), drone.getY()) || !checkIfTheCoordinatesAreOutsideRange(resourcePositionX, resourcePositionY, alienX, alienY));
+
+        this.alien = AlienFactory.createRandomAlien(alienX, alienY);
+    }
+
 
     private void initiateFight(boolean doesDroneBeginFight) {
         int thrownValue = Dice.throwd6();
@@ -101,32 +126,47 @@ public class PlanetExplorationLogic {
             if(alien.isDroneAttacked(thrownValue)){
                 System.out.println("Causes attack on drone: "+alien.getAttackDeathStatistic().getAttacks().toString() + " Dice: " + thrownValue);
                 drone.damageDrone();
+                if (drone.isDestroyed()) droneDestroyed();
                 System.out.println("Drone health: " + drone.getHealth());
             }
         }
-        if (!drone.isDestroyed())
-            while(true){
+        if (!drone.isDestroyed()) {
+            while (true) {
                 thrownValue = Dice.throwd6();
-                if(alien.isAlienDead(thrownValue)) {
-                    System.out.println("Causes alien death: "+alien.getAttackDeathStatistic().getDeaths().toString() + " Dice: " + thrownValue);
+                if (alien.isAlienDead(thrownValue)) {
+                    System.out.println("Causes alien death: " + alien.getAttackDeathStatistic().getDeaths().toString() + " Dice: " + thrownValue);
                     alien.destroy();
-                    System.out.println("Alien dead: " + alien.isDestroyed());
+                    alienDestroyed();
+                    System.out.println("Alien dead");
                     break;
                 }
                 thrownValue = Dice.throwd6();
-                if(alien.isDroneAttacked(thrownValue)){
-                    System.out.println("Causes attack on drone: "+alien.getAttackDeathStatistic().getAttacks().toString() + " Dice: " + thrownValue);
+                if (alien.isDroneAttacked(thrownValue)) {
+                    System.out.println("Causes attack on drone: " + alien.getAttackDeathStatistic().getAttacks().toString() + " Dice: " + thrownValue);
                     drone.damageDrone();
                     System.out.println("Drone health: " + drone.getHealth());
-                    if (drone.isDestroyed()) break;
+                    if (drone.isDestroyed()) {droneDestroyed(); break; }
                 }
 
             }
+        }
 
         System.out.println("Fight ended");
 
     }
 
+    private void droneDestroyed() {
+        //TODO: stopgame
+    }
+
+    private void alienDestroyed() {
+        alien = null;
+        alienWaitingCounter = Dice.throwd6();
+        System.out.println("Moves before next alien arrives: " + alienWaitingCounter);
+    }
+
+
+    // Test method to simulate user's input
     public void testMethod() {
         moveDrone("down");
         moveDrone("left");
@@ -136,6 +176,24 @@ public class PlanetExplorationLogic {
         moveDrone("left");
         moveDrone("down");
         moveDrone("left");
+    }
+
+
+    // Test method to draw grid
+    private void drawGrid() {
+        System.out.println("-------------");
+
+        for (int i = 1; i < 7; i++) {
+            for (int j = 1; j < 7; j++) {
+                if (alien != null && alien.getX() == j && alien.getY() == i) System.out.print("a");
+                else if (drone.getX() == j && drone.getY() == i) System.out.print("d");
+                else if (resourcePositionX == j && resourcePositionY == i) System.out.print("r");
+                else System.out.print("o");
+            }
+            System.out.print("\n");
+        }
+
+        System.out.println("-------------\n");
     }
 
 
