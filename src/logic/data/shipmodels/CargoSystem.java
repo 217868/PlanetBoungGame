@@ -1,5 +1,7 @@
 package logic.data.shipmodels;
 
+import java.util.concurrent.ThreadLocalRandom;
+
 public class CargoSystem implements ShipSystem {
     private boolean isAvailable;
     private boolean isMilitary;
@@ -78,6 +80,66 @@ public class CargoSystem implements ShipSystem {
         blackResourceAmount -= amount;
 
     }
+
+    public void addGreenResource(int amount) {
+        greenResourceAmount += amount;
+        if (greenResourceAmount > currentMaxResourceAmount) greenResourceAmount = currentMaxResourceAmount;
+    }
+
+    public void addBlueResource(int amount) {
+        blueResourceAmount += amount;
+        if (blueResourceAmount > currentMaxResourceAmount) blueResourceAmount = currentMaxResourceAmount;
+    }
+
+    public void addRedResource(int amount) {
+        redResourceAmount += amount;
+        if (redResourceAmount > currentMaxResourceAmount) redResourceAmount = currentMaxResourceAmount;
+    }
+
+    public void addBlackResource(int amount) {
+        blackResourceAmount += amount;
+        if (blackResourceAmount > currentMaxResourceAmount) blackResourceAmount = currentMaxResourceAmount;
+    }
+
+    public void addRandomResource(int amount) {
+        int rand = ThreadLocalRandom.current().nextInt(0, 3);
+
+        switch (rand) {
+            case 0:
+                addBlackResource(amount);
+                break;
+            case 1:
+                addBlueResource(amount);
+                break;
+            case 2:
+                addGreenResource(amount);
+                break;
+            case 3:
+                addRedResource(amount);
+                break;
+        }
+    }
+
+    public void loseBlackResource(int amount) {
+        blackResourceAmount -= amount;
+        if (blackResourceAmount < 0) blackResourceAmount = 0;
+    }
+
+    public void loseRedResource(int amount) {
+        redResourceAmount -= amount;
+        if (redResourceAmount < 0) redResourceAmount = 0;
+    }
+
+    public void loseBlueResource(int amount) {
+        blueResourceAmount -= amount;
+        if (blueResourceAmount < 0) blueResourceAmount = 0;
+    }
+
+    public void loseGreenResource(int amount) {
+        greenResourceAmount -= amount;
+        if (greenResourceAmount < 0) greenResourceAmount = 0;
+    }
+
 
     public void upgradeCargoSystem() {
         if (isMilitary && currentMaxResourceAmount == 12) return;

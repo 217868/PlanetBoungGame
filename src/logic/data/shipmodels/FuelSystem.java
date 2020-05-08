@@ -14,4 +14,9 @@ public class FuelSystem implements ShipSystem {
 
         fuelAmount = maxFuelAmount;
     }
+
+    public void spendFuel(int amount) {
+        fuelAmount -= amount;
+        if (fuelAmount <= 0) return; //TODO: exception endgame
+    }
 }
