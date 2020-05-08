@@ -90,6 +90,10 @@ public class GameLogic {
         this.setState(this.state.goToNextRegion());
     }
 
+    public void explorePlanet() {
+        this.setState(this.state.goToPlanet());
+    }
+
     public void playAgain() {
         this.setState(this.state.playAgain());
     }

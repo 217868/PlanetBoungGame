@@ -210,7 +210,7 @@ public class PlanetExplorationLogic {
         return drone.getX() == droneInitialPositionX && drone.getY() == droneInitialPositionY;
     }
 
-    private boolean isResourceInShip(){
+    public boolean isResourceInShip(){
         return hasResource;
     }
 
@@ -223,25 +223,9 @@ public class PlanetExplorationLogic {
         return false;
     }
 
-    public void testMethod() {
-        Scanner scanner = new Scanner(System.in);
-        char move;
-
-        do{
-            drawGrid();
-            System.out.println("Drone move: ");
-            move = scanner.next().charAt(0);;
-            if(move == 'w') moveDrone("up");
-            else if(move == 'a') moveDrone("left");
-            else if(move == 's') moveDrone("down");
-            else if(move == 'd') moveDrone("right");
-        } while(!gameEnded);
-
-    }
-
 
     // Test method to draw grid
-    private void drawGrid() {
+    public void drawGrid() {
         System.out.println("-------------");
 
         for (int i = 1; i < 7; i++) {
@@ -257,9 +241,7 @@ public class PlanetExplorationLogic {
         System.out.println("-------------\n");
     }
 
-
-
-
-
-
+    public Resource getResource() {
+        return resource;
+    }
 }

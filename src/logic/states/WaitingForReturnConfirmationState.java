@@ -9,7 +9,7 @@ public class WaitingForReturnConfirmationState extends StateAdapter {
 
     @Override
     public IState acceptReturn() {
-        return goToSpaceTravel();
+        return new SpaceTravelState(getGameData());
     }
 
     @Override

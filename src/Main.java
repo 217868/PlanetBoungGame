@@ -1,3 +1,4 @@
+import gui.TextGUI;
 import logic.Dice;
 import logic.GameLogic;
 import logic.PlanetExplorationLogic;
@@ -10,8 +11,7 @@ import java.util.ArrayList;
 public class Main {
 
     public static void main(String[] args) {
-        GameLogic gameLogic = new GameLogic();
-        gameLogic.chooseShip(true);
-        System.out.print(gameLogic.getGameData().getShip());
+        TextGUI gui = new TextGUI();
+        gui.run();
     }
 }

@@ -18,28 +18,28 @@ public class AtPlanetState extends StateAdapter {
     public IState goUp() {
         logic.moveDrone("up");
         if (logic.isDroneBackInShip()) return new WaitingForReturnConfirmationState(getGameData());
-        return new AtPlanetState(getGameData());
+        return this;
     }
 
     @Override
     public IState goDown() {
         logic.moveDrone("down");
         if (logic.isDroneBackInShip()) return new WaitingForReturnConfirmationState(getGameData());
-        return new AtPlanetState(getGameData());
+        return this;
     }
 
     @Override
     public IState goLeft() {
         logic.moveDrone("left");
         if (logic.isDroneBackInShip()) return new WaitingForReturnConfirmationState(getGameData());
-        return new AtPlanetState(getGameData());
+        return this;
     }
 
     @Override
     public IState goRight() {
         logic.moveDrone("right");
         if (logic.isDroneBackInShip()) return new WaitingForReturnConfirmationState(getGameData());
-        return new AtPlanetState(getGameData());
+        return this;
     }
 
 

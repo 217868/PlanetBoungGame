@@ -19,7 +19,6 @@ public class SpaceTravelState extends StateAdapter {
 
     @Override
     public IState goToPlanet(){
-        // Probably planet argument needed?
         return new AtPlanetState(getGameData());
     }
 
