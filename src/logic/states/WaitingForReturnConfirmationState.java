@@ -43,12 +43,13 @@ public class WaitingForReturnConfirmationState extends StateAdapter {
                     getGameData().getLogRecorder().addLog("You have gathered " + amountOfResource + " " + ResourceType.RED + " resource");
                     break;
             }
-            getGameData().getPlanet().deleteRandomResource();
+
         }
         else {
             getGameData().getShip().addArtifact();
             getGameData().getLogRecorder().addLog("You have found an Artifact!");
         }
+        getGameData().getPlanet().deleteRandomResource();
         return new SpaceTravelState(getGameData());
     }
 
