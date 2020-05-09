@@ -54,6 +54,7 @@ public class TextGUI {
         printLastLogs();
         Scanner s = new Scanner(System.in);
         System.out.println("You are in space.");
+        System.out.println("Planet underneath you has the following resources left: " + showResources());
         showStatus();
         System.out.println("\n");
         System.out.println("1. Explore planet");
@@ -284,6 +285,14 @@ public class TextGUI {
     private String isDroneAvailable() {
         if (gl.getGameData().getShip().getDrone().isDestroyed()) return "no";
         return "yes";
+    }
+
+    private String showResources() {
+        String resString = "";
+        for (Resource r : gl.getGameData().getPlanet().getResources()) {
+            resString += r.getResourceType() + " ";
+        }
+        return resString;
     }
 
 }
