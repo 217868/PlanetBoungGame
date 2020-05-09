@@ -11,7 +11,7 @@ public class ShieldSystem implements ShipSystem {
 
         if (isMilitary) maxShieldsAmount = 18;
         else maxShieldsAmount = 9;
-
+        isAvailable = true;
         shieldsAmount = maxShieldsAmount;
     }
 
@@ -29,5 +29,17 @@ public class ShieldSystem implements ShipSystem {
 
     public void spendShield(int amount){
         shieldsAmount -= amount;
+    }
+
+    public void addShield(int amount) {
+        shieldsAmount += amount;
+    }
+
+    public boolean isAvailable() {
+        return isAvailable;
+    }
+
+    public void setAvailable(boolean available) {
+        isAvailable = available;
     }
 }

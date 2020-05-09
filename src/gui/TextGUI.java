@@ -58,7 +58,8 @@ public class TextGUI {
         System.out.println("\n");
         System.out.println("1. Explore planet");
         System.out.println("2. Travel to next region");
-        if (gl.getGameData().getPlanet().hasSpaceStation()) System.out.println("3. Go to Space Station");
+        System.out.println("3. Produce");
+        if (gl.getGameData().getPlanet().hasSpaceStation()) System.out.println("4. Go to Space Station");
         System.out.println("0. Exit");
 
         int selection = clearBufforAndGetInput(s);
@@ -70,6 +71,24 @@ public class TextGUI {
                 gl.goToNextRegion();
                 break;
             case 3:
+                System.out.println("Which resource you want to produce? a - ammo, f - fuel, s - shield");
+                Scanner s1 = new Scanner(System.in);
+                char choice = s1.next().charAt(0);
+                System.out.println("How much of resource you want to produce?");
+                int amount = clearBufforAndGetInput(s);
+                switch (choice){
+                    case 'a':
+                      gl.produceAmmo(amount);
+                      break;
+                    case 'f':
+                        gl.produceFuel(amount);
+                        break;
+                    case 's':
+                        gl.produceShield(amount);
+                        break;
+                }
+                break;
+            case 4:
                 if (gl.getGameData().getPlanet().hasSpaceStation()) gl.goToSpaceStation();
                 break;
             case 0:

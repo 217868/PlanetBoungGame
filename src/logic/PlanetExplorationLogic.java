@@ -13,6 +13,7 @@ import java.util.Scanner;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class PlanetExplorationLogic {
+    private Ship ship;
     private Drone drone;
     private Alien alien;
     private int resourcePositionX;
@@ -27,6 +28,7 @@ public class PlanetExplorationLogic {
 
     public PlanetExplorationLogic(Ship ship, Resource resource, LogRecorder logRecorder){
         this.logRecorder = logRecorder;
+        this.ship = ship;
         this.drone = ship.getDrone();
         this.resource = resource;
         initiateCoordinates();
@@ -64,8 +66,6 @@ public class PlanetExplorationLogic {
 
         this.resourcePositionX = resourceX;
         this.resourcePositionY = resourceY;
-
-
     }
 
     private boolean checkIfTheCoordinatesAreOutsideRange(int x, int y, int excX, int excY){
@@ -151,9 +151,12 @@ public class PlanetExplorationLogic {
             while(true){
                 thrownValue = Dice.throwd6();
                 if(alien.isAlienDead(thrownValue, logRecorder)) {
-                    alien.destroy();
-                    alienDestroyed();
-                    break;
+                    if(ship.getWeaponSystem().isAvailable() || ship.getWeaponSystem().getWeapons() != 0){
+                        alien.destroy();
+                        alienDestroyed();
+                        ship.getWeaponSystem().spendAmmo(1);
+                        break;
+                    } else drone.damageDrone();
                 }
                 thrownValue = Dice.throwd6();
                 droneAttacked(thrownValue);

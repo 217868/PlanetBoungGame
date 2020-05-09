@@ -6,6 +6,7 @@ public class Ship {
     private CargoSystem cargoSystem;
     private WeaponSystem weaponSystem;
     private ShieldSystem shieldSystem;
+    private ResourceConverter resourceConverter;
 
     private Drone drone;
 
@@ -24,6 +25,7 @@ public class Ship {
         crewAmount = 6;
 
         drone = new Drone();
+        resourceConverter = new ResourceConverter(this);
     }
 
     public FuelSystem getFuelSystem() {
@@ -52,6 +54,16 @@ public class Ship {
 
     public void killOneCrewMember() {
         crewAmount--;
+        switch (crewAmount){
+            case 5:
+                getCargoSystem().setAvailable(false);
+                break;
+            case 4:
+                getWeaponSystem().setAvailable(false);
+                break;
+            case 3:
+                getShieldSystem().setAvailable(false);
+        }
         if (crewAmount == 0) endGame();
     }
 
@@ -69,5 +81,39 @@ public class Ship {
 
     public void addArtifact(){
         this.amountOfArtifacts++;
+    }
+
+    public boolean isCargoOfficerAvailable(){
+        if(crewAmount > 5) return true;
+        return false;
+    }
+
+    public boolean isWeaponOfficerAvailable(){
+        if(crewAmount > 4)return true;
+        return false;
+    }
+
+    public boolean isShieldOfficerAvailable(){
+        if(crewAmount > 3) return true;
+        return false;
+    }
+
+    public boolean isExplorationOfficerAvailable(){
+        if(crewAmount > 2) return  true;
+        return false;
+    }
+
+    public boolean isNavigationOfficerAvailable(){
+        if(crewAmount > 1) return true;
+        return false;
+    }
+
+    public boolean isCaptainAvailable(){
+        if(crewAmount > 0) return true;
+        return false;
+    }
+
+    public ResourceConverter getResourceConverter() {
+        return resourceConverter;
     }
 }

@@ -98,6 +98,18 @@ public class GameLogic {
         this.setState(this.state.playAgain());
     }
 
+    public void produceAmmo(int amount) {
+        this.setState(this.state.produce("ammo", amount));
+    }
+
+    public void produceShield(int amount) {
+        this.setState(this.state.produce("shield", amount));
+    }
+
+    public void produceFuel(int amount) {
+        this.setState(this.state.produce("fuel", amount));
+    }
+
 
     public GameData getGameData() {
         return gameData;

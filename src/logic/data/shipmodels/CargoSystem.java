@@ -14,7 +14,7 @@ public class CargoSystem implements ShipSystem {
 
     public CargoSystem(boolean isMilitary) {
         this.isMilitary = isMilitary;
-
+        isAvailable = true;
         currentMaxResourceAmount = 6;
 
         blackResourceAmount = 0;
@@ -144,10 +144,16 @@ public class CargoSystem implements ShipSystem {
 
 
     public void upgradeCargoSystem() {
+        if(!isAvailable) return;
         if (isMilitary && currentMaxResourceAmount == 12) return;
         if (!isMilitary && currentMaxResourceAmount == 24) return;
         //TODO: add proper exceptions if requirements not met
 
         currentMaxResourceAmount *= 2;
     }
+
+    public void setAvailable(boolean available) {
+        isAvailable = available;
+    }
+
 }

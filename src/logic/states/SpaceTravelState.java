@@ -20,7 +20,9 @@ public class SpaceTravelState extends StateAdapter {
 
     @Override
     public IState goToPlanet(){
-        return new AtPlanetState(getGameData());
+        if(!getGameData().getPlanet().hasResources()) return this;
+        if(!getGameData().getShip().isExplorationOfficerAvailable()) return this;
+            return new AtPlanetState(getGameData());
     }
 
     @Override
@@ -37,11 +39,28 @@ public class SpaceTravelState extends StateAdapter {
         return new SpaceTravelState(getGameData());
     }
 
+
+    @Override
+    public IState produce(String type, int amount){
+        if(!getGameData().getShip().getCargoSystem().isAvailable()) return this;
+
+        switch(type) {
+            case "ammo":
+                getGameData().getShip().getResourceConverter().produceAmmo(amount);
+            case "fuel":
+                getGameData().getShip().getResourceConverter().produceFuel(amount);
+            case "shield":
+                getGameData().getShip().getResourceConverter().produceShield(amount);
+        }
+
+        return this;
+    }
+
     private void travelCost(){
         int probability = Dice.throwd8();
         if(probability == 1) {
             getGameData().getLogRecorder().addLog("You have entered wormhole.");
-            if(getGameData().getShip().getCrewAmount() < 6){
+            if(!getGameData().getShip().isShieldOfficerAvailable()){
                 getGameData().getShip().getFuelSystem().spendFuel(4);
                 if (getGameData().getShip().getShieldSystem().getShieldsAmount() >= 4) {
                     getGameData().getShip().getShieldSystem().spendShield(4);

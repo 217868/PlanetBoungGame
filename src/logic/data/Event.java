@@ -64,6 +64,17 @@ public class Event {
             case CREW_RESCUE:
                 ship.hireOneCrewMember();
                 logRecorder.addLog("You have found a ship in distress with a lone crew member.");
+                switch(ship.getCrewAmount()){
+                    case 4:
+                        ship.getShieldSystem().setAvailable(true);
+                        break;
+                    case 5:
+                        ship.getWeaponSystem().setAvailable(true);
+                        break;
+                    case 6:
+                        ship.getCargoSystem().setAvailable(true);
+                        break;
+                }
                 break;
         }
     }
