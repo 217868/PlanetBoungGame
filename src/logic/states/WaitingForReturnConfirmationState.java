@@ -22,20 +22,27 @@ public class WaitingForReturnConfirmationState extends StateAdapter {
             switch (getGameData().getExLogic().getResource().getResourceType()) {
                 case BLACK:
                     getGameData().getShip().getCargoSystem().addBlackResource(amountOfResource);
+                    getGameData().getLogRecorder().addLog("You have gathered " + amountOfResource + " " + ResourceType.BLACK + " resource");
                     break;
                 case BLUE:
                     getGameData().getShip().getCargoSystem().addBlueResource(amountOfResource);
+                    getGameData().getLogRecorder().addLog("You have gathered " + amountOfResource + " " + ResourceType.BLUE + " resource");
                     break;
                 case GREEN:
                     getGameData().getShip().getCargoSystem().addGreenResource(amountOfResource);
+                    getGameData().getLogRecorder().addLog("You have gathered " + amountOfResource + " " + ResourceType.GREEN + " resource");
                     break;
                 case RED:
                     getGameData().getShip().getCargoSystem().addRedResource(amountOfResource);
+                    getGameData().getLogRecorder().addLog("You have gathered " + amountOfResource + " " + ResourceType.RED + " resource");
                     break;
             }
             getGameData().getPlanet().deleteRandomResource();
         }
-        else getGameData().getShip().addArtifact();
+        else {
+            getGameData().getShip().addArtifact();
+            getGameData().getLogRecorder().addLog("You have found an Artifact!");
+        }
         return new SpaceTravelState(getGameData());
     }
 

@@ -18,6 +18,7 @@ public class WeaponSystem implements ShipSystem {
         if (!isMilitary) return;
 
         maxWeapons *= 2;
+        weapons = maxWeapons;
     }
 
     public int getMaxWeapons() {

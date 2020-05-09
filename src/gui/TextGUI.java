@@ -54,7 +54,9 @@ public class TextGUI {
         printLastLogs();
         Scanner s = new Scanner(System.in);
         System.out.println("You are in space.");
-        System.out.println("Planet underneath you has the following resources left: " + showResources());
+        System.out.println("Planet type " + gl.getGameData().getPlanet().getPlanetType() + " underneath you has the following resources left: " + showResources());
+        if (gl.getGameData().getPlanet().hasSpaceStation()) System.out.println("There is a space station here.");
+        else System.out.println("There is no space station here.");
         showStatus();
         System.out.println("\n");
         System.out.println("1. Explore planet");
@@ -72,7 +74,7 @@ public class TextGUI {
                 gl.goToNextRegion();
                 break;
             case 3:
-                System.out.println("Which resource you want to produce? a - ammo, f - fuel, s - shield");
+                System.out.println("Which resource you want to produce? a - ammo [BLACK, BLUE], f - fuel [BLACK, RED, GREEN], s - shield [BLACK, GREEN, BLUE]");
                 Scanner s1 = new Scanner(System.in);
                 char choice = s1.next().charAt(0);
                 System.out.println("How much of resource you want to produce?");
@@ -142,12 +144,12 @@ public class TextGUI {
         showStatus();
         System.out.println("\n");
         System.out.println("You are at Space Station. You can perfom one action:\n");
-        System.out.println("1. Upgrade cargo");
+        System.out.println("1. Upgrade cargo [RED, BLUE, BLACK, GREEN]");
         System.out.println("2. Convert resource");
-        System.out.println("3. Hire new crew member");
-        System.out.println("4. Upgrade weapon system");
-        System.out.println("5. Replenish armor");
-        System.out.println("6. Buy a new drone");
+        System.out.println("3. Hire new crew member [RED, BLUE, BLACK, GREEN]");
+        System.out.println("4. Upgrade weapon system [3 RED, 3 BLUE, 3 BLACK, 3 GREEN]");
+        System.out.println("5. Replenish armor [RED, BLUE, BLACK, GREEN]");
+        System.out.println("6. Buy a new drone [3 RED, 3 BLUE, 3 BLACK, 3 GREEN]");
         System.out.println("0. Exit");
 
         int selection = clearBufforAndGetInput(s);
