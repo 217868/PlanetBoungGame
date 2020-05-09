@@ -51,4 +51,9 @@ public class Planet {
     public void deleteRandomResource() {
         resources.remove(availableResource);
     }
+
+    public boolean hasResources(){
+        if(resources.size() == 0) return false;
+        return true;
+    }
 }

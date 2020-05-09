@@ -27,4 +27,20 @@ public class WeaponSystem implements ShipSystem {
     public int getWeapons() {
         return weapons;
     }
+
+    public void addAmmo(int amount){
+        weapons += amount;
+    }
+
+    public void spendAmmo(int amount) {
+        weapons -= amount;
+    }
+
+    public boolean isAvailable() {
+        return isAvailable;
+    }
+
+    public void setAvailable(boolean available) {
+        isAvailable = available;
+    }
 }

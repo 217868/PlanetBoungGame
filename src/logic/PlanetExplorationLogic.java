@@ -11,6 +11,7 @@ import java.util.Scanner;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class PlanetExplorationLogic {
+    private Ship ship;
     private Drone drone;
     private Alien alien;
     private int resourcePositionX;
@@ -23,6 +24,7 @@ public class PlanetExplorationLogic {
     private boolean gameEnded;
 
     public PlanetExplorationLogic(Ship ship, Resource resource){
+        this.ship = ship;
         this.drone = ship.getDrone();
         this.resource = resource;
         initiateCoordinates();
@@ -144,10 +146,13 @@ public class PlanetExplorationLogic {
                 thrownValue = Dice.throwd6();
                 if(alien.isAlienDead(thrownValue)) {
                     System.out.println("Causes alien death: "+alien.getAttackDeathStatistic().getDeaths().toString() + " Dice: " + thrownValue);
-                    alien.destroy();
-                    alienDestroyed();
-                    System.out.println("Alien dead");
-                    break;
+                    if(ship.getWeaponSystem().isAvailable() || ship.getWeaponSystem().getWeapons() != 0){
+                        alien.destroy();
+                        alienDestroyed();
+                        ship.getWeaponSystem().spendAmmo(1);
+                        System.out.println("Alien dead");
+                        break;
+                    }
                 }
                 thrownValue = Dice.throwd6();
                 if(alien.isDroneAttacked(thrownValue)){

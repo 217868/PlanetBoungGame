@@ -18,6 +18,9 @@ public class SpaceStation implements ISpaceStation {
 
     @Override
     public void upgradeCargo() {
+        //TODO exception
+        if(!dockedShip.isNavigationOfficerAvailable()) return;
+        if(!dockedShip.getCargoSystem().isAvailable()) return;
         try {
             dockedShip.getCargoSystem().upgradeCargoSystem();
 
@@ -34,6 +37,9 @@ public class SpaceStation implements ISpaceStation {
 
     @Override
     public void convertResource(Resource from, Resource to) {
+        //TODO exception
+        if(!dockedShip.isNavigationOfficerAvailable()) return;
+        if(!dockedShip.getCargoSystem().isAvailable()) return;
         switch(from.getResourceType()){
             case BLACK:
                 dockedShip.getCargoSystem().payBlackResource(1);
@@ -70,9 +76,19 @@ public class SpaceStation implements ISpaceStation {
     public void hireCrew() {
         try {
             dockedShip.hireOneCrewMember();
-
             dockedShip.getCargoSystem().payAllResources(1);
             isAlreadyVisited = true;
+            switch(dockedShip.getCrewAmount()){
+                case 4:
+                    dockedShip.getShieldSystem().setAvailable(true);
+                    break;
+                case 5:
+                    dockedShip.getWeaponSystem().setAvailable(true);
+                    break;
+                case 6:
+                    dockedShip.getCargoSystem().setAvailable(true);
+                    break;
+            }
         } catch (Exception e) {
             //TODO: handle
         }
@@ -80,6 +96,7 @@ public class SpaceStation implements ISpaceStation {
 
     @Override
     public void upgradeWeaponSystem() {
+        if(!dockedShip.isNavigationOfficerAvailable()) return;
         try {
             dockedShip.getWeaponSystem().upgradeWeaponSystem();
 
@@ -92,6 +109,7 @@ public class SpaceStation implements ISpaceStation {
 
     @Override
     public void replenishArmor() {
+        if(!dockedShip.isNavigationOfficerAvailable()) return;
         try {
             dockedShip.getShieldSystem().replenishArmor();
 
@@ -105,6 +123,7 @@ public class SpaceStation implements ISpaceStation {
 
     @Override
     public void buyNewDrone() {
+        if(!dockedShip.isNavigationOfficerAvailable()) return;
         try {
             dockedShip.getDrone().repairDrone();
 

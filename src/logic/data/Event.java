@@ -52,6 +52,17 @@ public class Event {
                 break;
             case CREW_RESCUE:
                 ship.hireOneCrewMember();
+                switch(ship.getCrewAmount()){
+                    case 4:
+                        ship.getShieldSystem().setAvailable(true);
+                        break;
+                    case 5:
+                        ship.getWeaponSystem().setAvailable(true);
+                        break;
+                    case 6:
+                        ship.getCargoSystem().setAvailable(true);
+                        break;
+                }
                 break;
         }
     }

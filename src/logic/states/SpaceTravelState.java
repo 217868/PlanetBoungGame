@@ -20,7 +20,9 @@ public class SpaceTravelState extends StateAdapter {
 
     @Override
     public IState goToPlanet(){
-        return new AtPlanetState(getGameData());
+        if(!getGameData().getPlanet().hasResources()) return this;
+        if(!getGameData().getShip().isExplorationOfficerAvailable()) return this;
+            return new AtPlanetState(getGameData());
     }
 
     @Override
@@ -42,13 +44,28 @@ public class SpaceTravelState extends StateAdapter {
         if(probability == 1) {
             getGameData().getShip().getFuelSystem().spendFuel(3);
             getGameData().getShip().getShieldSystem().spendShield(2);
-            if(getGameData().getShip().getCrewAmount() < 6){
+            if(!getGameData().getShip().isShieldOfficerAvailable()){
                 getGameData().getShip().getFuelSystem().spendFuel(1);
                 getGameData().getShip().getShieldSystem().spendShield(2);
             }
         }
         else getGameData().getShip().getFuelSystem().spendFuel(1);
 
+    }
+
+    public IState produceShield(int amount){
+        getGameData().getShip().produceShield(amount);
+        return this;
+    }
+
+    public IState produceFuel(int amount){
+        getGameData().getShip().produceFuel(amount);
+        return this;
+    }
+
+    public IState produceAmmo(int amount){
+        getGameData().getShip().produceAmmo(amount);
+        return this;
     }
 
 
