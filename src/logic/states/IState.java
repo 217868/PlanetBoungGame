@@ -24,4 +24,5 @@ public interface IState {
     IState acceptReturn();
     IState declineReturn();
     IState goToNextRegion();
+    IState produce(String type, int amount);
 }

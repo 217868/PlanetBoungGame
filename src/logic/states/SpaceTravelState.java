@@ -39,6 +39,22 @@ public class SpaceTravelState extends StateAdapter {
         return new SpaceTravelState(getGameData());
     }
 
+    @Override
+    public IState produce(String type, int amount){
+        if(!getGameData().getShip().getCargoSystem().isAvailable()) return this;
+
+        switch(type) {
+            case "ammo":
+                getGameData().getShip().getResourceConverter().produceAmmo(amount);
+            case "fuel":
+                getGameData().getShip().getResourceConverter().produceFuel(amount);
+            case "shield":
+                getGameData().getShip().getResourceConverter().produceShield(amount);
+        }
+
+        return this;
+    }
+
     public void travelCost(){
         int probability = Dice.throwd8();
         if(probability == 1) {
@@ -51,21 +67,6 @@ public class SpaceTravelState extends StateAdapter {
         }
         else getGameData().getShip().getFuelSystem().spendFuel(1);
 
-    }
-
-    public IState produceShield(int amount){
-        getGameData().getShip().produceShield(amount);
-        return this;
-    }
-
-    public IState produceFuel(int amount){
-        getGameData().getShip().produceFuel(amount);
-        return this;
-    }
-
-    public IState produceAmmo(int amount){
-        getGameData().getShip().produceAmmo(amount);
-        return this;
     }
 
 

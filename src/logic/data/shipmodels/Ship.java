@@ -6,6 +6,7 @@ public class Ship {
     private CargoSystem cargoSystem;
     private WeaponSystem weaponSystem;
     private ShieldSystem shieldSystem;
+    private ResourceConverter resourceConverter;
 
     private Drone drone;
 
@@ -24,6 +25,7 @@ public class Ship {
         crewAmount = 6;
 
         drone = new Drone();
+        resourceConverter = new ResourceConverter(this);
     }
 
     public FuelSystem getFuelSystem() {
@@ -81,41 +83,6 @@ public class Ship {
         this.amountOfArtifacts++;
     }
 
-    public void produceShield(int amount){
-        //TODO exception
-        if(!getCargoSystem().isAvailable()) return;
-        if(getCargoSystem().getBlackResourceAmount() < amount || getCargoSystem().getGreenResourceAmount() < amount || getCargoSystem().getBlueResourceAmount() < amount) return;
-        if(getShieldSystem().getShieldsAmount() + amount <= getShieldSystem().getMaxShieldsAmount()){
-            getCargoSystem().payBlackResource(amount);
-            getCargoSystem().payGreenResource(amount);
-            getCargoSystem().payBlueResource(amount);
-            getShieldSystem().addShield(amount);
-        }
-    }
-
-    public void produceAmmo(int amount){
-        //TODO exception
-        if(!getCargoSystem().isAvailable()) return;
-        if(getCargoSystem().getBlackResourceAmount() < amount || getCargoSystem().getBlueResourceAmount() < amount) return;
-        if(getWeaponSystem().getWeapons() + amount <= getWeaponSystem().getMaxWeapons()){
-            getCargoSystem().payBlackResource(amount);
-            getCargoSystem().payBlueResource(amount);
-            getWeaponSystem().addAmmo(amount);
-        }
-    }
-
-    public void produceFuel(int amount){
-        //TODO exception
-        if(!getCargoSystem().isAvailable()) return;
-        if(getCargoSystem().getBlackResourceAmount() < amount || getCargoSystem().getRedResourceAmount() < amount || getCargoSystem().getGreenResourceAmount() < amount ) return;
-        if(getFuelSystem().getFuelAmount() + amount <= getFuelSystem().getMaxFuelAmount()){
-            getCargoSystem().payBlackResource(amount);
-            getCargoSystem().payRedResource(amount);
-            getCargoSystem().payGreenResource(amount);
-            getFuelSystem().addFuel(amount);
-        }
-    }
-
     public boolean isCargoOfficerAvailable(){
         if(crewAmount > 5) return true;
         return false;
@@ -146,5 +113,7 @@ public class Ship {
         return false;
     }
 
-
+    public ResourceConverter getResourceConverter() {
+        return resourceConverter;
+    }
 }

@@ -152,7 +152,7 @@ public class PlanetExplorationLogic {
                         ship.getWeaponSystem().spendAmmo(1);
                         System.out.println("Alien dead");
                         break;
-                    }
+                    } else drone.damageDrone();
                 }
                 thrownValue = Dice.throwd6();
                 if(alien.isDroneAttacked(thrownValue)){

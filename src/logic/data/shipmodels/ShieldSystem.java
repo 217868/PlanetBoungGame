@@ -11,7 +11,7 @@ public class ShieldSystem implements ShipSystem {
 
         if (isMilitary) maxShieldsAmount = 18;
         else maxShieldsAmount = 9;
-
+        isAvailable = true;
         shieldsAmount = maxShieldsAmount;
     }
 

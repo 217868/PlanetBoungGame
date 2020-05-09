@@ -14,7 +14,7 @@ public class CargoSystem implements ShipSystem {
 
     public CargoSystem(boolean isMilitary) {
         this.isMilitary = isMilitary;
-
+        isAvailable = true;
         currentMaxResourceAmount = 6;
 
         blackResourceAmount = 0;
@@ -153,4 +153,5 @@ public class CargoSystem implements ShipSystem {
     public void setAvailable(boolean available) {
         isAvailable = available;
     }
+
 }

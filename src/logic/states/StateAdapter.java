@@ -115,4 +115,10 @@ public class StateAdapter implements IState {
     public IState goToNextRegion() {
         return this;
     }
+
+    @Override
+    public IState produce(String type, int amount) {
+        return this;
+    }
+
 }

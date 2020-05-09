@@ -8,7 +8,7 @@ public class WeaponSystem implements ShipSystem {
 
     public WeaponSystem(boolean isMilitary) {
         this.isMilitary = isMilitary;
-
+        isAvailable = true;
         maxWeapons = 9;
         weapons = 9;
     }
