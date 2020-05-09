@@ -100,12 +100,6 @@ public class PlanetExplorationLogic {
                 break;
         }
         if(isResourceReached(drone.getX(), drone.getY())) resourceReached();
-        if(isDroneBackInShip()) {
-            if (isComeBackToShipConfirmed()) {
-                backInShip();
-                return;
-            }
-        }
 
         if (alien != null) {
 
@@ -212,15 +206,6 @@ public class PlanetExplorationLogic {
 
     public boolean isResourceInShip(){
         return hasResource;
-    }
-
-    private boolean isComeBackToShipConfirmed(){
-        System.out.println("Do you wanna come back to the ship? y/n");
-        Scanner scanner = new Scanner(System.in);
-        char option = scanner.next().charAt(0);
-        if(option == 'y') return true;
-        else if(option == 'n') return false;
-        return false;
     }
 
 

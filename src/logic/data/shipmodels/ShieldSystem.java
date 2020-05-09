@@ -18,4 +18,16 @@ public class ShieldSystem implements ShipSystem {
     public void replenishArmor() {
         shieldsAmount = maxShieldsAmount;
     }
+
+    public int getMaxShieldsAmount() {
+        return maxShieldsAmount;
+    }
+
+    public int getShieldsAmount() {
+        return shieldsAmount;
+    }
+
+    public void spendShield(int amount){
+        shieldsAmount -= amount;
+    }
 }

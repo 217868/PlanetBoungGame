@@ -52,6 +52,8 @@ public class TextGUI {
     private void spaceTravelGUI(){
         Scanner s = new Scanner(System.in);
         System.out.println("You are in space.");
+        showStatus();
+        System.out.println("\n");
         System.out.println("1. Explore planet");
         System.out.println("2. Travel to next region");
         if (gl.getGameData().getPlanet().hasSpaceStation()) System.out.println("3. Go to Space Station");
@@ -118,6 +120,8 @@ public class TextGUI {
      */
     private void atSpaceStationGUI(){
         Scanner s = new Scanner(System.in);
+        showStatus();
+        System.out.println("\n");
         System.out.println("You are at Space Station. You can perfom one action:\n");
         System.out.println("1. Upgrade cargo");
         System.out.println("2. Convert resource");
@@ -229,6 +233,27 @@ public class TextGUI {
                 return new Resource(ResourceType.BLACK);
 
         }
+    }
+
+    private void showStatus() {
+        int maxResource = gl.getGameData().getShip().getCargoSystem().getCurrentMaxResourceAmount();
+        int currentFuel = gl.getGameData().getShip().getFuelSystem().getFuelAmount();
+        int maxFuel = gl.getGameData().getShip().getFuelSystem().getMaxFuelAmount();
+        int currentShield = gl.getGameData().getShip().getShieldSystem().getShieldsAmount();
+        int maxShield = gl.getGameData().getShip().getShieldSystem().getMaxShieldsAmount();
+        int currentWeapon = gl.getGameData().getShip().getWeaponSystem().getWeapons();
+        int maxWeapon = gl.getGameData().getShip().getWeaponSystem().getMaxWeapons();
+
+        System.out.println("Resources: BLACK " + gl.getGameData().getShip().getCargoSystem().getBlackResourceAmount() + "/" + maxResource +
+        " BLUE " + gl.getGameData().getShip().getCargoSystem().getBlueResourceAmount() + "/" + maxResource +
+        " RED " + gl.getGameData().getShip().getCargoSystem().getRedResourceAmount() + "/" + maxResource +
+        " GREEN " + gl.getGameData().getShip().getCargoSystem().getGreenResourceAmount() + "/" + maxResource +
+                " Crew: " + gl.getGameData().getShip().getCrewAmount() +
+                " Artifacts: " + gl.getGameData().getShip().getAmountOfArtifacts() +
+                " Fuel: " + currentFuel + "/" + maxFuel +
+                " Shield: " + currentShield + "/" + maxShield +
+                " Weapon: " + currentWeapon + "/" + maxWeapon
+        );
     }
 
 }

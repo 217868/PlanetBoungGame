@@ -19,4 +19,12 @@ public class WeaponSystem implements ShipSystem {
 
         maxWeapons *= 2;
     }
+
+    public int getMaxWeapons() {
+        return maxWeapons;
+    }
+
+    public int getWeapons() {
+        return weapons;
+    }
 }

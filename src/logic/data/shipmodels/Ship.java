@@ -66,4 +66,8 @@ public class Ship {
     public Drone getDrone() {
         return drone;
     }
+
+    public void addArtifact(){
+        this.amountOfArtifacts++;
+    }
 }

@@ -1,5 +1,6 @@
 package logic.states;
 
+import logic.Dice;
 import logic.GameData;
 import logic.data.Event;
 import logic.data.shipmodels.Ship;
@@ -24,6 +25,7 @@ public class SpaceTravelState extends StateAdapter {
 
     @Override
     public IState goToNextRegion() {
+        travelCost();
         if (getGameData().getShip().getAmountOfArtifacts() >= 5) return new GameWonState(getGameData());
 
         Event event = new Event();
@@ -33,6 +35,20 @@ public class SpaceTravelState extends StateAdapter {
 
         getGameData().generateNextPlanet();
         return new SpaceTravelState(getGameData());
+    }
+
+    public void travelCost(){
+        int probability = Dice.throwd8();
+        if(probability == 1) {
+            getGameData().getShip().getFuelSystem().spendFuel(3);
+            getGameData().getShip().getShieldSystem().spendShield(2);
+            if(getGameData().getShip().getCrewAmount() < 6){
+                getGameData().getShip().getFuelSystem().spendFuel(1);
+                getGameData().getShip().getShieldSystem().spendShield(2);
+            }
+        }
+        else getGameData().getShip().getFuelSystem().spendFuel(1);
+
     }
 
 

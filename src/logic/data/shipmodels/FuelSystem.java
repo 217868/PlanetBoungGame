@@ -23,4 +23,8 @@ public class FuelSystem implements ShipSystem {
     public int getFuelAmount() {
         return fuelAmount;
     }
+
+    public int getMaxFuelAmount() {
+        return maxFuelAmount;
+    }
 }
