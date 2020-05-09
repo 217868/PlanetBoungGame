@@ -59,7 +59,11 @@ public class ResourceToPlanetMap {
     }
 
     public static ArrayList<Resource> getResourcesForPlanetType(PlanetType planetType){
-         return getPlanetTypesAndResources().get(planetType);
+         ArrayList<Resource> resources = new ArrayList<>();
+         for(Resource r : getPlanetTypesAndResources().get(planetType)){
+             resources.add(new Resource(r));
+         }
+         return resources;
     }
 
 }
