@@ -1,6 +1,7 @@
 package gui;
 
 import logic.GameLogic;
+import logic.data.Log;
 import logic.data.Resource;
 import logic.data.shipmodels.ResourceType;
 import logic.states.*;
@@ -50,6 +51,7 @@ public class TextGUI {
         }
     }
     private void spaceTravelGUI(){
+        printLastLogs();
         Scanner s = new Scanner(System.in);
         System.out.println("You are in space.");
         showStatus();
@@ -94,15 +96,19 @@ public class TextGUI {
         switch(selection) {
             case 'w':
                 gl.goUp();
+                printLastLogs();
                 break;
             case 'a':
                 gl.goLeft();
+                printLastLogs();
                 break;
             case 's':
                 gl.goDown();
+                printLastLogs();
                 break;
             case 'd':
                 gl.goRight();
+                printLastLogs();
                 break;
             case '0':
                 exit = true;
@@ -110,14 +116,7 @@ public class TextGUI {
         }
 
     }
-    /*
-    upgradeCargo();
-    IState convertResource(Resource from, Resource to);
-    IState hireCrew();
-    IState upgradeWeaponSystem();
-    IState replenishArmor();
-    IState buyNewDrone();
-     */
+
     private void atSpaceStationGUI(){
         Scanner s = new Scanner(System.in);
         showStatus();
@@ -162,7 +161,7 @@ public class TextGUI {
     }
     private void waitingForReturnConfirmationGUI(){
         System.out.println("Are you sure you want to return?");
-        if (gl.getGameData().getExLogic().isResourceInShip())
+        if (gl.getGameData().getExLogic().isResourceInDrone())
             System.out.println("You have gathered resources\n");
         else System.out.println("You have not gathered any resources\n");
 
@@ -252,8 +251,20 @@ public class TextGUI {
                 " Artifacts: " + gl.getGameData().getShip().getAmountOfArtifacts() +
                 " Fuel: " + currentFuel + "/" + maxFuel +
                 " Shield: " + currentShield + "/" + maxShield +
-                " Weapon: " + currentWeapon + "/" + maxWeapon
+                " Weapon: " + currentWeapon + "/" + maxWeapon +
+                " Drone: " + isDroneAvailable()
         );
+    }
+
+    private void printLastLogs() {
+        for (Log log : gl.getGameData().getLogRecorder().getUnreadLogs()) {
+            System.out.println(log);
+        }
+    }
+
+    private String isDroneAvailable() {
+        if (gl.getGameData().getShip().getDrone().isDestroyed()) return "no";
+        return "yes";
     }
 
 }

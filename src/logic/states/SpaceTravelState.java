@@ -28,7 +28,7 @@ public class SpaceTravelState extends StateAdapter {
         travelCost();
         if (getGameData().getShip().getAmountOfArtifacts() >= 5) return new GameWonState(getGameData());
 
-        Event event = new Event();
+        Event event = new Event(getGameData().getLogRecorder());
         event.runSpecificEvent(getGameData().getShip());
 
         if (getGameData().getShip().getFuelSystem().getFuelAmount() == 0 || getGameData().getShip().getCrewAmount() == 0) return new GameLostState(getGameData());
@@ -37,17 +37,36 @@ public class SpaceTravelState extends StateAdapter {
         return new SpaceTravelState(getGameData());
     }
 
-    public void travelCost(){
+    private void travelCost(){
         int probability = Dice.throwd8();
         if(probability == 1) {
-            getGameData().getShip().getFuelSystem().spendFuel(3);
-            getGameData().getShip().getShieldSystem().spendShield(2);
+            getGameData().getLogRecorder().addLog("You have entered wormhole.");
             if(getGameData().getShip().getCrewAmount() < 6){
-                getGameData().getShip().getFuelSystem().spendFuel(1);
-                getGameData().getShip().getShieldSystem().spendShield(2);
+                getGameData().getShip().getFuelSystem().spendFuel(4);
+                if (getGameData().getShip().getShieldSystem().getShieldsAmount() >= 4) {
+                    getGameData().getShip().getShieldSystem().spendShield(4);
+                    getGameData().getLogRecorder().addLog("Because you do not have Shields Officer, you have spent 4 shields and 4 fuel cells to get through wormhole.");
+                } else {
+                    getGameData().getLogRecorder().addLog("Because you do not have Shields Officer and have no shields, you have spent 4 fuel cells and one crew member has died to get through wormhole.");
+                    getGameData().getShip().killOneCrewMember();
+                }
+
+            } else {
+                getGameData().getShip().getFuelSystem().spendFuel(3);
+                if (getGameData().getShip().getShieldSystem().getShieldsAmount() >= 2) {
+                    getGameData().getShip().getShieldSystem().spendShield(2);
+                    getGameData().getLogRecorder().addLog("You have spent 2 shields and 3 fuel cells to get through wormhole.");
+
+                } else {
+                    getGameData().getShip().killOneCrewMember();
+                    getGameData().getLogRecorder().addLog("Because you do not have any shields, you have spent 3 fuel cells and one crew member has died to get through wormhole.");
+                }
             }
         }
-        else getGameData().getShip().getFuelSystem().spendFuel(1);
+        else {
+            getGameData().getLogRecorder().addLog("You have spent one fuel cell on space travel.");
+            getGameData().getShip().getFuelSystem().spendFuel(1);
+        }
 
     }
 

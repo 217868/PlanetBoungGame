@@ -5,14 +5,17 @@ import logic.GameData;
 import logic.data.shipmodels.ResourceType;
 
 public class WaitingForReturnConfirmationState extends StateAdapter {
-    public WaitingForReturnConfirmationState(GameData gameData) {
+    private IState previousState;
+
+    public WaitingForReturnConfirmationState(GameData gameData, IState previousState) {
         super(gameData);
+        this.previousState = previousState;
     }
 
     @Override
     public IState acceptReturn() {
         getGameData().getShip().getFuelSystem().spendFuel(1);
-        if(!getGameData().getExLogic().isResourceInShip()) return new SpaceTravelState(getGameData());
+        if(!getGameData().getExLogic().isResourceInDrone()) return new SpaceTravelState(getGameData());
 
         if(getGameData().getExLogic().getResource().getResourceType() != ResourceType.PINK){
                 int amountOfResource = Dice.throwd6();
@@ -38,7 +41,7 @@ public class WaitingForReturnConfirmationState extends StateAdapter {
 
     @Override
     public IState declineReturn() {
-        return new AtPlanetState(getGameData());
+        return previousState;
     }
 
 }

@@ -101,22 +101,24 @@ public class CargoSystem implements ShipSystem {
         if (blackResourceAmount > currentMaxResourceAmount) blackResourceAmount = currentMaxResourceAmount;
     }
 
-    public void addRandomResource(int amount) {
+    public ResourceType addRandomResource(int amount) {
         int rand = ThreadLocalRandom.current().nextInt(0, 3);
 
         switch (rand) {
             case 0:
                 addBlackResource(amount);
-                break;
+                return ResourceType.BLACK;
             case 1:
                 addBlueResource(amount);
-                break;
+                return ResourceType.BLUE;
             case 2:
                 addGreenResource(amount);
-                break;
+                return ResourceType.GREEN;
             case 3:
                 addRedResource(amount);
-                break;
+                return ResourceType.RED;
+            default:
+                return ResourceType.RED;
         }
     }
 

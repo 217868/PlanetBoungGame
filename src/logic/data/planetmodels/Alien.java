@@ -1,5 +1,7 @@
 package logic.data.planetmodels;
 
+import logic.data.LogRecorder;
+
 public class Alien {
 
     private AlienType alienType;
@@ -65,13 +67,30 @@ public class Alien {
         this.attackDeathStatistic = attackDeathStatistic;
     }
 
-    public boolean isAlienDead(int thrownValue){
-        if(getAttackDeathStatistic().getDeaths().contains(thrownValue)) return true;
+    public boolean isAlienDead(int thrownValue, LogRecorder logRecorder){
+        String deathStats = "";
+        for (int stats : getAttackDeathStatistic().getDeaths())
+            deathStats += " " + stats;
+
+
+        if(getAttackDeathStatistic().getDeaths().contains(thrownValue)) {
+            logRecorder.addLog("Drone KILLS the alien throwing " + thrownValue + ". [required " + deathStats + "]");
+            return true;
+        }
+        logRecorder.addLog("Drone MISSES the alien throwing " + thrownValue + ". [required " + deathStats + "]");
         return false;
     }
 
-    public boolean isDroneAttacked(int thrownValue){
-        if(getAttackDeathStatistic().getAttacks().contains(thrownValue)) return true;
+    public boolean isDroneAttacked(int thrownValue, LogRecorder logRecorder){
+        String attackStats = "";
+        for (int stats : getAttackDeathStatistic().getAttacks())
+            attackStats += " " + stats;
+
+        if(getAttackDeathStatistic().getAttacks().contains(thrownValue)) {
+            logRecorder.addLog("Alien ATTACKS the drone throwing " + thrownValue + ". [required " + attackStats + "]");
+            return true;
+        }
+        logRecorder.addLog("Alien MISSES the drone throwing " + thrownValue + ". [required " + attackStats + "]");
         return false;
     }
 

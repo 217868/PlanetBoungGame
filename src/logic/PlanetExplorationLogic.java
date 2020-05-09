@@ -1,5 +1,7 @@
 package logic;
 
+import logic.data.Log;
+import logic.data.LogRecorder;
 import logic.data.Resource;
 import logic.data.planetmodels.Alien;
 import logic.data.planetmodels.AlienFactory;
@@ -20,9 +22,11 @@ public class PlanetExplorationLogic {
     private int droneInitialPositionX;
     private int droneInitialPositionY;
     private boolean hasResource;
-    private boolean gameEnded;
+    private boolean droneDestroyed;
+    private LogRecorder logRecorder;
 
-    public PlanetExplorationLogic(Ship ship, Resource resource){
+    public PlanetExplorationLogic(Ship ship, Resource resource, LogRecorder logRecorder){
+        this.logRecorder = logRecorder;
         this.drone = ship.getDrone();
         this.resource = resource;
         initiateCoordinates();
@@ -30,7 +34,9 @@ public class PlanetExplorationLogic {
         this.droneInitialPositionY = drone.getY();
         this.hasResource = false;
         alienWaitingCounter = 0;
-        gameEnded = false;
+        droneDestroyed = false;
+
+        logRecorder.addLog("Drone landed on a planet with " + resource.getResourceType() + " resource type.");
     }
 
     private void initiateCoordinates(){
@@ -58,6 +64,8 @@ public class PlanetExplorationLogic {
 
         this.resourcePositionX = resourceX;
         this.resourcePositionY = resourceY;
+
+
     }
 
     private boolean checkIfTheCoordinatesAreOutsideRange(int x, int y, int excX, int excY){
@@ -84,7 +92,7 @@ public class PlanetExplorationLogic {
     }
 
     public void moveDrone(String dir) {
-        if (drone.isDestroyed() || gameEnded) return;
+        if (drone.isDestroyed() || droneDestroyed) return;
         switch(dir) {
             case "up":
                 drone.moveUp();
@@ -99,7 +107,9 @@ public class PlanetExplorationLogic {
                 drone.moveRight();
                 break;
         }
-        if(isResourceReached(drone.getX(), drone.getY())) resourceReached();
+        if(isResourceReached(drone.getX(), drone.getY())) {
+            logRecorder.addLog("Drone has picked up the resource.");
+        }
 
         if (alien != null) {
 
@@ -130,66 +140,49 @@ public class PlanetExplorationLogic {
     }
 
     private void initiateFight(boolean doesDroneBeginFight) {
+        if (!doesDroneBeginFight) logRecorder.addLog("Alien type " + alien.getAlienType() + " has attacked the drone first.");
+        else logRecorder.addLog("Drone has attacked alien type " + alien.getAlienType() + ".");
+
         int thrownValue = Dice.throwd6();
         if(!doesDroneBeginFight){
-            if(alien.isDroneAttacked(thrownValue)){
-                System.out.println("Causes attack on drone: "+alien.getAttackDeathStatistic().getAttacks().toString() + " Dice: " + thrownValue);
-                drone.damageDrone();
-                if (drone.isDestroyed()) droneDestroyed();
-                System.out.println("Drone health: " + drone.getHealth());
-            }
+            droneAttacked(thrownValue);
         }
         if (!drone.isDestroyed()) {
             while(true){
                 thrownValue = Dice.throwd6();
-                if(alien.isAlienDead(thrownValue)) {
-                    System.out.println("Causes alien death: "+alien.getAttackDeathStatistic().getDeaths().toString() + " Dice: " + thrownValue);
+                if(alien.isAlienDead(thrownValue, logRecorder)) {
                     alien.destroy();
                     alienDestroyed();
-                    System.out.println("Alien dead");
                     break;
                 }
                 thrownValue = Dice.throwd6();
-                if(alien.isDroneAttacked(thrownValue)){
-                    System.out.println("Causes attack on drone: "+alien.getAttackDeathStatistic().getAttacks().toString() + " Dice: " + thrownValue);
-                    drone.damageDrone();
-                    System.out.println("Drone health: " + drone.getHealth());
-                    if (drone.isDestroyed()) break;
-                }
+                droneAttacked(thrownValue);
+                if (droneDestroyed) break;
 
             }
         }
 
-        System.out.println("Fight ended");
+    }
 
+    private void droneAttacked(int thrownValue) {
+        if(alien.isDroneAttacked(thrownValue, logRecorder)){
+            drone.damageDrone();
+            logRecorder.addLog("Drone health has decreased to " + drone.getHealth() + ".");
+            if (drone.isDestroyed()) {
+                logRecorder.addLog("Drone has been destroyed.");
+                droneDestroyed();
+            }
+        }
     }
 
     private void droneDestroyed() {
-        //TODO: stopgame
-        gameEnded = true;
+        droneDestroyed = true;
     }
 
     private void alienDestroyed() {
         alien = null;
         alienWaitingCounter = Dice.throwd6();
-        System.out.println("Moves before next alien arrives: " + alienWaitingCounter);
-    }
-
-    private void resourceReached(){
-        System.out.println("Resource reached");
-    }
-
-    private void backInShip(){
-        if(isResourceInShip()) {
-            System.out.println("Back in ship with a resource");
-            gameEnded = true;
-            return;
-        }
-        else {
-            System.out.println("Back in ship without a resource");
-            gameEnded = true;
-            return;
-        }
+        logRecorder.addLog("Drone moves before next alien arrives: " + alienWaitingCounter + ".");
     }
 
     private boolean isResourceReached(int droneX, int droneY){
@@ -204,12 +197,13 @@ public class PlanetExplorationLogic {
         return drone.getX() == droneInitialPositionX && drone.getY() == droneInitialPositionY;
     }
 
-    public boolean isResourceInShip(){
+    public boolean isResourceInDrone(){
         return hasResource;
     }
 
 
     // Test method to draw grid
+    // TODO: delete when GUI implemented
     public void drawGrid() {
         System.out.println("-------------");
 
@@ -228,5 +222,9 @@ public class PlanetExplorationLogic {
 
     public Resource getResource() {
         return resource;
+    }
+
+    public boolean isDroneDestroyed() {
+        return droneDestroyed;
     }
 }
